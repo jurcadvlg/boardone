@@ -10,6 +10,7 @@ export const ToggleButtonGroup = styled(MuiToggleButtonGroup)({
   padding: '8px',
   display: 'flex',
   '& .MuiToggleButton-root': {
+    fontSize: '16px',
     flex: 1,
   },
   '& .MuiToggleButtonGroup-grouped': {

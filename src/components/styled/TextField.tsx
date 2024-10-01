@@ -7,14 +7,14 @@ export const TextField = styled(MuiTextField)({
   '& .MuiOutlinedInput-root': {
     borderRadius: '16px',
     '& fieldset': {
-      borderColor: 'white'
+      borderColor: 'white',
     },
     '&:hover fieldset': {
-      borderColor: 'white'
+      borderColor: 'white',
     },
     '&.Mui-focused fieldset': {
       borderColor: 'gray',
-      borderWidth: '1px'
-    }
-  }
+      borderWidth: '1px',
+    },
+  },
 });

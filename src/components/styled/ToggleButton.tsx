@@ -5,8 +5,8 @@ import { ToggleButton as MuiToggleButton } from '@mui/material';
 
 export const ToggleButton = styled(MuiToggleButton)({
   backgroundColor: 'white',
-  paddingTop: '8px',
-  paddingBottom: '8px',
+  paddingTop: '6px',
+  paddingBottom: '6px',
   textTransform: 'none',
   fontWeight: 'normal',
   border: 'none',
