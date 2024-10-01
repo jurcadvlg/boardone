@@ -1,6 +1,7 @@
 import { TextField } from '@/components/styled';
 import React from 'react';
 
+// TODO: Change TextFields to TimePicker
 export default function TripTime({ className }: { className?: string }) {
   return (
     <div className={className}>
@@ -16,6 +17,7 @@ export default function TripTime({ className }: { className?: string }) {
               },
             },
           }}
+          fullWidth
         />
 
         <TextField
@@ -29,6 +31,7 @@ export default function TripTime({ className }: { className?: string }) {
               },
             },
           }}
+          fullWidth
         />
       </div>
     </div>

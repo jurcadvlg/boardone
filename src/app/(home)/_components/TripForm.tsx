@@ -7,7 +7,7 @@ import TripDestination from './TripDestination';
 
 export default function TripForm() {
   return (
-    <div className="m-16 w-full max-w-[500px] rounded-2xl bg-[#F1F2F4] p-16 text-center">
+    <div className="m-4 w-full max-w-[500px] rounded-2xl bg-[#F1F2F4] px-4 py-8 text-center md:m-16 md:p-16">
       <h1 className="m-0">Poptávka autobusové dopravy</h1>
 
       <TripDirection className="mt-10" />
