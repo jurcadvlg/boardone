@@ -6,9 +6,9 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import React from 'react';
 
-export default function TripDestination() {
+export default function TripDestination({ className }: { className?: string }) {
   return (
-    <>
+    <div className={className}>
       <div className="relative flex items-center">
         <div className="flex-1 rounded-2xl bg-white">
           <div className="border-0 border-b border-solid border-gray-100">
@@ -51,7 +51,7 @@ export default function TripDestination() {
         </div>
 
         <div className="absolute right-2">
-          <IconButton sx={{ backgroundColor: 'white' }} aria-label="swap">
+          <IconButton aria-label="swap">
             <SwapVertIcon />
           </IconButton>
         </div>
@@ -62,6 +62,6 @@ export default function TripDestination() {
           Přidat mezizastávku
         </Button>
       </div>
-    </>
+    </div>
   );
 }

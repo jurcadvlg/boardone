@@ -8,27 +8,14 @@ import TripDestination from './TripDestination';
 export default function TripForm() {
   return (
     <div className="m-16 w-full max-w-[500px] rounded-2xl bg-[#F1F2F4] p-16 text-center">
-      {/* Title */}
-      <h1 className="m-0">Poptávka autobousové dopravy</h1>
+      <h1 className="m-0">Poptávka autobusové dopravy</h1>
 
-      {/* Direction */}
-      <div className="mt-10">
-        <TripDirection />
-      </div>
+      <TripDirection className="mt-10" />
+      <TripTime className="mt-6" />
+      <TripDestination className="mt-6" />
 
-      {/* Time */}
-      <div className="mt-8">
-        <TripTime />
-      </div>
-
-      {/* Destination */}
-      <div className="mt-8">
-        <TripDestination />
-      </div>
-
-      {/* Calculate */}
-      <div className="mt-8">
-        <Button variant="contained" sx={{ width: '250px' }}>
+      <div className="mx-auto mt-8 max-w-[250px]">
+        <Button variant="contained" fullWidth>
           Spočítat cenu
         </Button>
       </div>
