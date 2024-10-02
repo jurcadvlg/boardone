@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="cs">
+      <Toaster richColors closeButton position="top-center" />
       <body className={inter.className}>{children}</body>
     </html>
   );
