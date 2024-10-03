@@ -1,18 +1,21 @@
 import { ToggleButton, ToggleButtonGroup } from '@/components/styled';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { TripFormValues } from './_hooks/useTripForm';
 
 export default function TripDirection({ className }: { className?: string }) {
-  const [direction, setDirection] = useState('1');
+  const { watch, setValue } = useFormContext<TripFormValues>();
+  const direction = watch().direction;
 
-  function handleDirectionChange(_: MouseEvent<HTMLElement>, value: string) {
-    setDirection(value);
+  function handleDirectionChange(_: MouseEvent<HTMLElement>, value: 'oneway' | 'roundtrip') {
+    setValue('direction', value);
   }
 
   return (
     <div className={className}>
       <ToggleButtonGroup value={direction} exclusive onChange={handleDirectionChange} aria-label="Direction">
-        <ToggleButton value="1">Jednosměrná</ToggleButton>
-        <ToggleButton value="2">Zpáteční</ToggleButton>
+        <ToggleButton value="oneway">Jednosměrná</ToggleButton>
+        <ToggleButton value="roundtrip">Zpáteční</ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

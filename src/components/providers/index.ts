@@ -1,0 +1,1 @@
+export { GoogleMapsProvider } from './GoogleMapsProvider';

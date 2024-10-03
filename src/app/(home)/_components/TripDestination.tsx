@@ -7,8 +7,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import React, { useState } from 'react';
 import { ulid } from 'ulid';
-import DestinationInput from './DestinationInput';
 import { toast } from 'sonner';
+import TripTime from './TripTime';
+import { AddressAutocomplete } from '@/components/form';
 
 type StopField = {
   id: string;
@@ -31,47 +32,33 @@ export default function TripDestination({ className }: { className?: string }) {
 
   return (
     <div className={className}>
-      {fields.length <= 0 && (
-        <div className="relative flex items-center">
-          <div className="flex-1 rounded-2xl bg-white">
-            <div className="border-0 border-b border-solid border-gray-100">
-              <DestinationInput placeholder="Odkud..." type="start" />
-            </div>
-            <DestinationInput placeholder="Kam..." type="end" />
-          </div>
+      <div className="w-full">
+        <div className="relative mb-4 flex w-full items-center">
+          <AddressAutocomplete name="origin" placeholder="Odkud..." type="origin" />
           <div className="absolute right-2">
             <IconButton aria-label="swap">
               <SwapVertIcon />
             </IconButton>
           </div>
         </div>
-      )}
 
-      {fields.length > 0 && (
-        <div className="w-full">
-          <div className="relative mb-2 flex items-center">
-            <DestinationInput placeholder="Odkud..." type="start" />
+        <div className="mb-4">
+          <TripTime />
+        </div>
+
+        {fields.map((field, i) => (
+          <div key={field.id} className="relative mb-4 flex w-full items-center">
+            <AddressAutocomplete name={`waypoint${i + 1}`} placeholder="Kam..." type="waypoint" number={i + 1} />
             <div className="absolute right-2">
-              <IconButton aria-label="swap">
-                <SwapVertIcon />
+              <IconButton aria-label="delete" onClick={() => handleDeleteField(field.id)}>
+                <DeleteIcon />
               </IconButton>
             </div>
           </div>
+        ))}
 
-          {fields.map((field, i) => (
-            <div key={field.id} className="relative mb-2 flex w-full items-center">
-              <DestinationInput placeholder="Mezizastávka..." type="stop" number={i + 1} />
-              <div className="absolute right-2">
-                <IconButton aria-label="delete" onClick={() => handleDeleteField(field.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            </div>
-          ))}
-
-          <DestinationInput placeholder="Kam..." type="end" />
-        </div>
-      )}
+        <AddressAutocomplete name="destination" placeholder="Kam..." type="destination" />
+      </div>
 
       <div className="mt-2">
         <Button variant="text" sx={{ color: '#3498db' }} startIcon={<AddLocationAltIcon />} onClick={handleAddField}>
