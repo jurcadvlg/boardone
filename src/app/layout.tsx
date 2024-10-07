@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
 import { GoogleMapsProvider } from '@/components/providers';
+import { Provider as JotaiProvider } from 'jotai';
 
 export const metadata: Metadata = {
   title: 'BoardOne',
@@ -22,10 +23,12 @@ export default function RootLayout({
   return (
     <html lang="cs">
       <body className={inter.className}>
-        <GoogleMapsProvider>
-          <Toaster richColors closeButton position="top-center" />
-          {children}
-        </GoogleMapsProvider>
+        <JotaiProvider>
+          <GoogleMapsProvider>
+            <Toaster richColors closeButton position="top-center" />
+            {children}
+          </GoogleMapsProvider>
+        </JotaiProvider>
       </body>
     </html>
   );

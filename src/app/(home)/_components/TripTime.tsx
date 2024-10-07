@@ -5,7 +5,7 @@ import React from 'react';
 export default function TripTime({ className }: { className?: string }) {
   return (
     <div className={className}>
-      <div className="flex gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <TextField
           variant="outlined"
           value={'Nyní'}

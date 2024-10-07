@@ -1,5 +1,5 @@
 import { Directions } from '@/types/Directions';
-import to from '@/utils/awaitToJs';
+import to from '@/utils/awaitTo';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {

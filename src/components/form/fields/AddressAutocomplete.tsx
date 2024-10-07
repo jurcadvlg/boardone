@@ -12,9 +12,10 @@ type Props = {
   type: 'origin' | 'waypoint' | 'destination';
   placeholder?: string;
   number?: number;
+  disabled?: boolean;
 };
 
-export default function AddressAutocomplete({ name, placeholder, type, number }: Props) {
+export default function AddressAutocomplete({ name, placeholder, type, number, disabled }: Props) {
   const { watch, setValue } = useFormContext();
   const value: string = watch(name);
 
@@ -95,6 +96,7 @@ export default function AddressAutocomplete({ name, placeholder, type, number }:
 
   return (
     <Autocomplete
+      disabled={disabled}
       fullWidth
       disablePortal
       freeSolo
