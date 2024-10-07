@@ -19,7 +19,7 @@ export default function StepSubmit() {
   async function onSave() {
     setIsSaving(true);
     const data = getValues();
-    const [error, response] = await to(
+    const [, response] = await to(
       fetch('/api/trip/submit', {
         method: 'POST',
         headers: {
@@ -41,7 +41,7 @@ export default function StepSubmit() {
   async function onSend() {
     setIsSending(true);
     const data = getValues();
-    const [error, response] = await to(
+    const [, response] = await to(
       fetch('/api/trip/submit', {
         method: 'POST',
         headers: {
