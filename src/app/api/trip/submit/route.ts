@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const mailOptions = getSubmittedCalculationEmail(data);
+  const mailOptions = getSubmittedCalculationEmail(data, 'BoardOne - Odeslaná poptávka');
 
   const [error, response] = await to(transporter.sendMail(mailOptions));
 

@@ -7,7 +7,7 @@ type RouteDestination = {
   departureDate?: Date | null;
 };
 
-export function getSubmittedCalculationEmail(data: SubmitDto) {
+export function getSubmittedCalculationEmail(data: SubmitDto, subject: string) {
   const origin = data.calculation.routes[0].from!;
   const destination = data.calculation.routes[data.calculation.routes.length - 1].to!;
   const originDepartureDate = origin.departureDate ? new Date(origin.departureDate).toLocaleString('cs-CZ') : '';
@@ -73,7 +73,7 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
     from: process.env.EMAIL_USER,
     to: data.formData.email || process.env.EMAIL_USER,
     bcc: process.env.EMAIL_USER,
-    subject: 'BoardOne - Odeslaná poptávka',
+    subject: subject,
     text: text,
     html: html,
   };
