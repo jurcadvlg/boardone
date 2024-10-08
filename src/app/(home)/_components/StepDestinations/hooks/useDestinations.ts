@@ -50,7 +50,7 @@ export default function useDestinations() {
 
   useEffect(() => {
     if (direction === 'roundtrip') {
-      setValue('destination.address', originAddress, { shouldDirty: true, shouldValidate: true });
+      setValue('destination.address', originAddress);
     }
   }, [direction, originAddress, setValue]);
 

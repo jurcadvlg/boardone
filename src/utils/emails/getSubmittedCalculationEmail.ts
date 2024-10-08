@@ -33,9 +33,9 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
       })
       .join('\n')}\n\n
     Kalkulace:\n
-    Cena: ${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price}\n
     Vzdálenost: ${Math.round(data.calculation.distance)} km\n
-    Délka: ${formatTime(data.calculation.duration ?? 0)}\n\n
+    Délka: ${formatTime(data.calculation.duration ?? 0)}\n
+    Cena: ${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}\n\n
     Objednavatel:\n
     Jméno: ${data.formData.firstName} ${data.formData.lastName}\n
     Telefon: ${data.formData.phoneNumber}\n
@@ -59,9 +59,9 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
     </ul>
     <br />
     <h2 style="color: #2196F3;">Kalkulace</h2>
-    <p>Cena: <strong>${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price}</strong></p>
     <p>Vzdálenost: <strong>${Math.round(data.calculation.distance)} km</strong></p>
     <p>Délka: <strong>${formatTime(data.calculation.duration ?? 0)}</strong></p>
+    <p>Cena: <strong>${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}</strong></p>
     <br />
     <h2 style="color: #2196F3;">Objednavatel</h2>
     <p>Jméno: <strong>${data.formData.firstName} ${data.formData.lastName}</strong></p>
