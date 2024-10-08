@@ -1,9 +1,9 @@
 import { ToggleButton, ToggleButtonGroup } from '@/components/styled';
 import { MouseEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { TripFormValues } from './_hooks/useTripForm';
+import { TripFormValues } from '../hooks/useTripForm';
 
-export default function TripDirection({ className }: { className?: string }) {
+export default function DestinationsDirection({ className }: { className?: string }) {
   const { watch, setValue } = useFormContext<TripFormValues>();
   const direction = watch().direction;
 

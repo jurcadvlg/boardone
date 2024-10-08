@@ -1,11 +1,11 @@
-import { TextField } from '@/components/styled';
+import { TextField } from '@/components/form/fields';
 import { useFormContext } from 'react-hook-form';
 
-export default function ContactForm() {
+export default function SubmitContactForm() {
   const { register } = useFormContext();
   return (
     <>
-      <h2 className="text-[#012512]">Kontaktní formulář</h2>
+      <h2 className="text-[#012512DD]">Kontaktní formulář</h2>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
           <TextField label="Jméno" fullWidth {...register('firstName')} />

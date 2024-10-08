@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { ulid } from 'ulid';
 import { toast } from 'sonner';
 
-export default function useTripDestination() {
+export default function useDestinations() {
   const { setValue, getValues, watch } = useFormContext();
-  const { direction, origin } = watch();
+  const { direction } = watch();
+  const originAddress = watch('origin.address');
   const [fields, setFields] = useAtom(fieldsAtom);
 
   function handleAddField() {
@@ -20,14 +21,21 @@ export default function useTripDestination() {
 
   function handleDeleteField(id: string, i: number) {
     setFields((fields) => fields.filter((field) => field.id !== id));
-    setValue(`waypoint${i + 1}`, null);
+    setValue(
+      `waypoint${i + 1}`,
+      {
+        address: '',
+        departureTime: null,
+      },
+      { shouldDirty: true, shouldValidate: true }
+    );
   }
 
   function swapOriginAndDestination() {
     const { origin, destination, waypoint1, waypoint2, waypoint3, waypoint4, waypoint5 } = getValues();
 
-    setValue('origin', destination);
-    setValue('destination', origin);
+    setValue('origin', destination, { shouldDirty: true, shouldValidate: true });
+    setValue('destination', origin, { shouldDirty: true, shouldValidate: true });
 
     const waypoints = [waypoint1, waypoint2, waypoint3, waypoint4, waypoint5];
     const filteredWaypoints = waypoints.filter(Boolean);
@@ -36,15 +44,15 @@ export default function useTripDestination() {
     if (filteredWaypoints.length <= 1) return;
 
     for (let i = 0; i < 5; i++) {
-      setValue('waypoint' + (i + 1), filteredWaypoints[i] || '');
+      setValue('waypoint' + (i + 1), filteredWaypoints[i] || '', { shouldDirty: true, shouldValidate: true });
     }
   }
 
   useEffect(() => {
     if (direction === 'roundtrip') {
-      setValue('destination', origin);
+      setValue('destination.address', originAddress, { shouldDirty: true, shouldValidate: true });
     }
-  }, [direction, origin, setValue]);
+  }, [direction, originAddress, setValue]);
 
   return {
     fields,

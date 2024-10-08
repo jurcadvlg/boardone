@@ -10,12 +10,8 @@ export const TextField = styled(MuiTextField)({
     '& fieldset': {
       borderColor: 'white',
     },
-    '&:hover fieldset': {
+    '&.Mui-disabled fieldset': {
       borderColor: 'white',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: 'gray',
-      borderWidth: '1px',
     },
   },
 });

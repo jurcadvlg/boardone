@@ -6,6 +6,7 @@ import FlagIcon from '@mui/icons-material/Flag';
 import { useGoogleMaps } from '../../providers/GoogleMapsProvider';
 import { TextField } from '../../styled';
 import { useFormContext } from 'react-hook-form';
+import { getFieldError } from '@/utils/getFieldError';
 
 type Props = {
   name: string;
@@ -16,8 +17,13 @@ type Props = {
 };
 
 export default function AddressAutocomplete({ name, placeholder, type, number, disabled }: Props) {
-  const { watch, setValue } = useFormContext();
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
   const value: string = watch(name);
+  const error = getFieldError(name, errors);
 
   const [options, setOptions] = useState<PlacePrediction[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,13 +119,13 @@ export default function AddressAutocomplete({ name, placeholder, type, number, d
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onChange={(_, newValue: any) => {
         if (newValue?.place_id) {
-          setValue(name, newValue.description, { shouldDirty: true });
+          setValue(name, newValue.description, { shouldDirty: true, shouldValidate: true });
         } else {
-          setValue(name, '', { shouldDirty: true });
+          setValue(name, '', { shouldDirty: true, shouldValidate: true });
         }
       }}
       onInputChange={(_, newInputValue) => {
-        setValue(name, newInputValue, { shouldDirty: true });
+        setValue(name, newInputValue, { shouldDirty: true, shouldValidate: true });
       }}
       renderInput={(params) => (
         <TextField
@@ -133,6 +139,8 @@ export default function AddressAutocomplete({ name, placeholder, type, number, d
             },
           }}
           {...params}
+          error={!!error}
+          helperText={error?.message?.toString()}
           fullWidth
         />
       )}

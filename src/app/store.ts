@@ -1,6 +1,6 @@
-import { Directions } from '@/types/Directions';
 import { atom } from 'jotai';
-import { StopField } from './(home)/_components/TripDestination';
+import { StopField } from './(home)/_components/StepDestinations/Destinations';
+import { Calculation } from './api/trip/calculate/route';
 
-export const directionsAtom = atom<Directions | null>(null);
 export const fieldsAtom = atom<StopField[]>([]);
+export const calculationAtom = atom<Calculation | null>(null);

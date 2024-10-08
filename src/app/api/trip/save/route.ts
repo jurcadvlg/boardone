@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: process.env.EMAIL_USER + ', ' + data.formData.email,
-    subject: 'BoardOne - Odeslaná poptávka',
+    subject: 'BoardOne - Uložená poptávka',
     text: text,
     html: html,
   };
