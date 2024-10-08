@@ -4,23 +4,35 @@ import { useAtomValue } from 'jotai';
 import to from '@/utils/awaitTo';
 import { calculationAtom } from '@/app/store';
 import { useFormContext } from 'react-hook-form';
+import { TripFormValues } from '../../hooks/useTripForm';
+import { Calculation } from '@/app/api/trip/calculate/route';
+
+export type SubmitDto = {
+  formData: TripFormValues;
+  calculation: Calculation;
+};
 
 export default function useStepSubmit() {
   const [isSaving, setIsSaving] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const calculation = useAtomValue(calculationAtom);
 
-  const { setValue, getValues, trigger } = useFormContext();
+  const { setValue, getValues, trigger } = useFormContext<TripFormValues>();
 
   async function onSave() {
     setIsSaving(true);
     const data = getValues();
 
     const isValid = await trigger();
-    if (!isValid) {
+    if (!isValid || !calculation) {
       setIsSaving(false);
       return;
     }
+
+    const dto: SubmitDto = {
+      formData: data,
+      calculation: calculation,
+    };
 
     const [error, response] = await to(
       fetch('/api/trip/save', {
@@ -28,7 +40,7 @@ export default function useStepSubmit() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData: data, calculation: calculation }),
+        body: JSON.stringify(dto),
       })
     );
 
@@ -47,10 +59,15 @@ export default function useStepSubmit() {
     const data = getValues();
 
     const isValid = await trigger();
-    if (!isValid) {
+    if (!isValid || !calculation) {
       setIsSending(false);
       return;
     }
+
+    const dto: SubmitDto = {
+      formData: data,
+      calculation: calculation,
+    };
 
     const [error, response] = await to(
       fetch('/api/trip/submit', {
@@ -58,7 +75,7 @@ export default function useStepSubmit() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData: data, calculation: calculation }),
+        body: JSON.stringify(dto),
       })
     );
 
