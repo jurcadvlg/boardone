@@ -10,6 +10,7 @@ export const ToggleButton = styled(MuiToggleButton)({
   textTransform: 'none',
   fontWeight: 'normal',
   border: 'none',
+  transition: 'all 0.2s ease',
   '&.Mui-selected': {
     backgroundColor: '#06c760',
     color: 'white',
@@ -18,6 +19,6 @@ export const ToggleButton = styled(MuiToggleButton)({
     backgroundColor: '#06c76020',
   },
   '&.Mui-selected:hover': {
-    backgroundColor: '#06c76090',
+    backgroundColor: '#06c760CC',
   },
 });

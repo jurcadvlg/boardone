@@ -8,6 +8,7 @@ export default function DestinationsDirection({ className }: { className?: strin
   const direction = watch().direction;
 
   function handleDirectionChange(_: MouseEvent<HTMLElement>, value: 'oneway' | 'roundtrip') {
+    if (!value) return;
     setValue('direction', value);
   }
 
