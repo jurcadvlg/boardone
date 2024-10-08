@@ -19,9 +19,11 @@ export function getTripPrice(
   switch (direction) {
     default:
     case 'oneway':
-      price = getOnewayPrice(distance, duration + waitTime, passengers);
+      price = getOnewayPrice(distance, paidWaitingTime, passengers);
+      break;
     case 'roundtrip':
-      price = getRoundtripPrice(distance, paidWaitingTime, passengers);
+      price = getRoundtripPrice(distance, duration + waitTime, passengers);
+      break;
   }
 
   if (tripStartDate && tripEndDate && price) {
