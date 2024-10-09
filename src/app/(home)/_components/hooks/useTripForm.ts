@@ -16,7 +16,7 @@ export type TripDestination = {
 export type TripFormValues = {
   step: number;
   direction?: 'oneway' | 'roundtrip';
-  passengers: number;
+  passengers: number | null;
 
   origin: {
     address: string;
@@ -183,7 +183,7 @@ export default function useTripForm() {
   const initialValues: TripFormValues = {
     step: 1,
     direction: 'oneway',
-    passengers: 0,
+    passengers: null,
 
     origin: {
       address: '',

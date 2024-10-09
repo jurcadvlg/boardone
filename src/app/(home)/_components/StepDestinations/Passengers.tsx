@@ -10,6 +10,7 @@ export default function Passengers({ className }: { className?: string }) {
     <div className={className}>
       <TextField
         fullWidth
+        placeholder="0"
         type="number"
         {...register('passengers')}
         slotProps={{
