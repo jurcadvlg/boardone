@@ -72,7 +72,7 @@ export default function StepSubmit() {
 
       <div className="mt-6 text-left">
         <Button variant="text" sx={{ color: '#3498db' }} startIcon={<ArrowBackIcon />} onClick={stepBack}>
-          Vrátit se zpět
+          Zpět na výběr trasy
         </Button>
       </div>
     </>
