@@ -8,6 +8,10 @@ import useStepSubmit from './hooks/useStepSubmit';
 export default function StepSubmit() {
   const { calculation, isSaving, isSending, onSave, onSend, stepBack } = useStepSubmit();
 
+  const submitButtonText = calculation?.individualCalculation
+    ? 'Poptat individuální kalkulaci'
+    : 'Závazně objednat dopravu';
+
   if (!calculation) {
     toast.error('Nepodařilo se načíst kalkulaci. Zkuste to prosím znovu.');
 
@@ -28,7 +32,7 @@ export default function StepSubmit() {
         <SubmitRecap />
       </div>
 
-      {calculation.price && (
+      {calculation.price && !calculation.individualCalculation && (
         <div className="my-12">
           <div className="mx-auto w-fit border-0 border-b-2 border-solid border-b-[#06c760] text-3xl font-bold text-[#012512DD]">
             {calculation.price.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}
@@ -40,7 +44,7 @@ export default function StepSubmit() {
         </div>
       )}
 
-      {calculation.individualCalculation && (
+      {(calculation.individualCalculation || !calculation.price) && (
         <div className="mt-8 text-lg text-[#012512DD]">
           <div>Vaše zadání vyžaduje individuální kalkukaci.</div>
           <div>
@@ -53,22 +57,22 @@ export default function StepSubmit() {
         <SubmitContactForm />
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="w-full">
-          <Button variant="outlined" fullWidth type="submit" disabled={isSaving} onClick={onSave}>
+      <div className="mt-8 flex flex-col-reverse gap-4 md:flex-row">
+        <div className="flex-1 md:text-left">
+          <Button variant="outlined" type="submit" disabled={isSaving} onClick={onSave}>
             {isSaving ? 'Ukládání...' : 'Uložit na pozděj'}
           </Button>
         </div>
-        <div className="w-full">
-          <Button variant="contained" fullWidth type="submit" disabled={isSending} onClick={onSend}>
-            {isSending ? 'Odesílání...' : 'Odeslat zprávu'}
+        <div className="flex-1 md:text-right">
+          <Button variant="contained" type="submit" disabled={isSending} onClick={onSend}>
+            {isSending ? 'Odesílání...' : submitButtonText}
           </Button>
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 text-left">
         <Button variant="text" sx={{ color: '#3498db' }} startIcon={<ArrowBackIcon />} onClick={stepBack}>
-          Vrátit zpět
+          Vrátit se zpět
         </Button>
       </div>
     </>

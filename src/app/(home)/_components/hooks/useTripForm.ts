@@ -20,7 +20,7 @@ export type TripFormValues = {
 
   origin: {
     address: string;
-    departureTime: Date;
+    departureTime: Date | null;
   };
   waypoint1: TripDestination;
   waypoint2: TripDestination;
@@ -49,27 +49,97 @@ export default function useTripForm() {
 
     origin: yup.object().shape({
       address: yup.string().required('Povinné pole'),
-      departureTime: yup.date().required('Povinné pole'),
+      departureTime: yup.date().typeError('Nesprávný formát').required('Povinné pole'),
     }),
     waypoint1: yup.object().shape({
       address: yup.string().nullable(),
-      departureTime: yup.date().nullable(),
+      departureTime: yup
+        .date()
+        .typeError('Nesprávný formát')
+        .nullable()
+        .test(
+          'is-after-last-departure',
+          'Musí být později než čas odjezdu z předchozí zastávky',
+          function (value, context) {
+            const departureTime = context.from?.[context.from.length - 1].value.origin.departureTime;
+            if (departureTime && value) {
+              return value > departureTime;
+            }
+            return true;
+          }
+        ),
     }),
     waypoint2: yup.object().shape({
       address: yup.string().nullable(),
-      departureTime: yup.date().nullable(),
+      departureTime: yup
+        .date()
+        .typeError('Nesprávný formát')
+        .nullable()
+        .test(
+          'is-after-last-departure',
+          'Musí být později než čas odjezdu z předchozí zastávky',
+          function (value, context) {
+            const departureTime = context.from?.[context.from.length - 1].value.waypoint1.departureTime;
+            if (departureTime && value) {
+              return value > departureTime;
+            }
+            return true;
+          }
+        ),
     }),
     waypoint3: yup.object().shape({
       address: yup.string().nullable(),
-      departureTime: yup.date().nullable(),
+      departureTime: yup
+        .date()
+        .typeError('Nesprávný formát')
+        .nullable()
+        .test(
+          'is-after-last-departure',
+          'Musí být později než čas odjezdu z předchozí zastávky',
+          function (value, context) {
+            const departureTime = context.from?.[context.from.length - 1].value.waypoint2.departureTime;
+            if (departureTime && value) {
+              return value > departureTime;
+            }
+            return true;
+          }
+        ),
     }),
     waypoint4: yup.object().shape({
       address: yup.string().nullable(),
-      departureTime: yup.date().nullable(),
+      departureTime: yup
+        .date()
+        .typeError('Nesprávný formát')
+        .nullable()
+        .test(
+          'is-after-last-departure',
+          'Musí být později než čas odjezdu z předchozí zastávky',
+          function (value, context) {
+            const departureTime = context.from?.[context.from.length - 1].value.waypoint3.departureTime;
+            if (departureTime && value) {
+              return value > departureTime;
+            }
+            return true;
+          }
+        ),
     }),
     waypoint5: yup.object().shape({
       address: yup.string().nullable(),
-      departureTime: yup.date().nullable(),
+      departureTime: yup
+        .date()
+        .typeError('Nesprávný formát')
+        .nullable()
+        .test(
+          'is-after-last-departure',
+          'Musí být později než čas odjezdu z předchozí zastávky',
+          function (value, context) {
+            const departureTime = context.from?.[context.from.length - 1].value.waypoint4.departureTime;
+            if (departureTime && value) {
+              return value > departureTime;
+            }
+            return true;
+          }
+        ),
     }),
     destination: yup.object().shape({
       address: yup.string().required('Povinné pole'),
@@ -117,7 +187,7 @@ export default function useTripForm() {
 
     origin: {
       address: '',
-      departureTime: new Date(Date.now()),
+      departureTime: null,
     },
     waypoint1: {
       address: '',
@@ -150,8 +220,8 @@ export default function useTripForm() {
   };
 
   const form = useForm<TripFormValues>({
+    resolver: yupResolver<TripFormValues>(validationSchema),
     defaultValues: initialValues,
-    resolver: yupResolver(validationSchema),
     mode: 'onChange',
   });
 

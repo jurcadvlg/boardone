@@ -19,6 +19,7 @@ export default function DestinationTime({ name, className }: { name: string; cla
       <div className={className}>
         <div className="w-full first:border-0 first:border-r first:border-solid first:border-gray-100">
           <DateTimePicker
+            minDateTime={dayjs(Date.now())}
             value={value ? dayjs(value) : null}
             onChange={onChange}
             slotProps={{
