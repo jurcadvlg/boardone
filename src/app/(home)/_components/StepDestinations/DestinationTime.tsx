@@ -25,7 +25,7 @@ export default function DestinationTime({ name, className }: { name: string; cla
             slotProps={{
               textField: {
                 InputProps: {
-                  startAdornment: <span className="mr-1 text-gray-400">Odjezd:</span>,
+                  startAdornment: <span className="mr-2 text-gray-400">Odjezd</span>,
                 },
                 fullWidth: true,
               },

@@ -21,7 +21,7 @@ export default function Passengers({ className }: { className?: string }) {
                 <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#34495e]">
                   <PeopleAltIcon sx={{ fontSize: '16px', color: 'white' }} />
                 </div>
-                Počet pasažérů
+                <span className="mr-2 text-gray-500">Počet pasažérů</span>
               </InputAdornment>
             ),
           },
