@@ -104,8 +104,8 @@ export function getSavedCalculationEmail(data: SubmitDto) {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: data.formData.email || process.env.EMAIL_USER,
-    bcc: process.env.EMAIL_USER,
+    to: data.formData.email || process.env.CC_EMAIL,
+    bcc: process.env.CC_EMAIL,
     subject: 'BoardOne: Nabídka poptávka autobusové dopravy',
     text: text,
     html: html,
