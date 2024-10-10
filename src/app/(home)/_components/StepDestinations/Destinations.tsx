@@ -36,17 +36,8 @@ export default function Destinations({ className }: { className?: string }) {
           />
         ))}
 
-        <div className="mt-2">
-          <AddressAutocomplete
-            name="destination.address"
-            placeholder="Kam..."
-            type="destination"
-            disabled={direction === 'roundtrip'}
-          />
-        </div>
-
-        <div className="mt-1">
-          {fields.length < 5 && (
+        {fields.length < 5 && (
+          <div className="mt-2">
             <Button
               variant="text"
               sx={{ color: '#3498db' }}
@@ -55,7 +46,16 @@ export default function Destinations({ className }: { className?: string }) {
             >
               Přidat zastávku
             </Button>
-          )}
+          </div>
+        )}
+
+        <div className="mt-2">
+          <AddressAutocomplete
+            name="destination.address"
+            placeholder="Kam..."
+            type="destination"
+            disabled={direction === 'roundtrip'}
+          />
         </div>
       </div>
     </div>

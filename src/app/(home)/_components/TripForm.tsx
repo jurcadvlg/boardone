@@ -13,7 +13,7 @@ export default function TripForm() {
     <Form form={form} onSubmit={onSubmit}>
       <div className="mx-auto w-full max-w-[700px]">
         <div className="mx-4 my-4 rounded-2xl bg-[#F1F2F4] py-8 text-center md:mx-0 md:my-16 md:py-16">
-          <div className="mx-8 md:mx-16">
+          <div className="mx-4 md:mx-16">
             <h1 className="m-0 text-[#012512DD]">Poptávka autobusové dopravy</h1>
 
             {step === 1 && <StepDestinations isSubmitting={isSubmitting} />}

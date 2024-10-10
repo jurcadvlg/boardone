@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import useStepSubmit from './hooks/useStepSubmit';
 
 export default function StepSubmit() {
-  const { calculation, isSaving, isSending, onSave, onSend, stepBack } = useStepSubmit();
+  const { calculation, isSaving, isSubmitting, onSave, onSubmit, stepBack } = useStepSubmit();
 
   const submitButtonText = calculation?.individualCalculation
     ? 'Poptat individuální kalkulaci'
@@ -64,8 +64,8 @@ export default function StepSubmit() {
           </Button>
         </div>
         <div className="flex-1 md:text-right">
-          <Button variant="contained" type="submit" disabled={isSending} onClick={onSend}>
-            {isSending ? 'Odesílání...' : submitButtonText}
+          <Button variant="contained" type="submit" disabled={isSubmitting} onClick={onSubmit}>
+            {isSubmitting ? 'Odesílání...' : submitButtonText}
           </Button>
         </div>
       </div>

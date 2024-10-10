@@ -1,13 +1,14 @@
-import { calculationAtom } from '@/app/store';
+import { calculationAtom, SubmitType, submitTypeAtom } from '@/app/store';
 import { Button } from '@/components/styled';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useFormContext } from 'react-hook-form';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function StepConfirmation() {
   const { reset } = useFormContext();
   const setCalculation = useSetAtom(calculationAtom);
+  const submitType = useAtomValue(submitTypeAtom);
 
   function handleReset() {
     reset();
@@ -16,7 +17,10 @@ export default function StepConfirmation() {
   return (
     <>
       <div className="mt-10 rounded-2xl bg-white px-4 py-8">
-        <h2 className="text-[#012512DD]">Poptávka odeslána</h2>
+        {submitType === SubmitType.Submit && <h2 className="text-[#012512DD]">Poptávka odeslána</h2>}
+        {submitType === SubmitType.Save && (
+          <h2 className="text-[#012512DD]">Poptávku včetně cenové kalkulace jsme Vám zaslali na e-mail</h2>
+        )}
 
         <div>
           <CheckCircleIcon sx={{ fontSize: '48px', color: '#06c760' }} />

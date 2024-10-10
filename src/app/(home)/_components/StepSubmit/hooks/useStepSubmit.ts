@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import to from '@/utils/awaitTo';
-import { calculationAtom } from '@/app/store';
+import { calculationAtom, SubmitType, submitTypeAtom } from '@/app/store';
 import { useFormContext } from 'react-hook-form';
 import { TripFormValues } from '../../hooks/useTripForm';
 import { Calculation } from '@/app/api/trip/calculate/route';
@@ -14,8 +14,9 @@ export type SubmitDto = {
 
 export default function useStepSubmit() {
   const [isSaving, setIsSaving] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const calculation = useAtomValue(calculationAtom);
+  const setSubmitType = useSetAtom(submitTypeAtom);
 
   const { setValue, getValues, trigger } = useFormContext<TripFormValues>();
 
@@ -51,16 +52,17 @@ export default function useStepSubmit() {
       return;
     }
 
+    setSubmitType(SubmitType.Save);
     setValue('step', 3);
   }
 
-  async function onSend() {
-    setIsSending(true);
+  async function onSubmit() {
+    setIsSubmitting(true);
     const data = getValues();
 
     const isValid = await trigger();
     if (!isValid || !calculation) {
-      setIsSending(false);
+      setIsSubmitting(false);
       return;
     }
 
@@ -79,13 +81,14 @@ export default function useStepSubmit() {
       })
     );
 
-    setIsSending(false);
+    setIsSubmitting(false);
 
     if (error || !response.ok) {
       toast.error('Nepodařilo se odeslat poptávku. Zkuste to prosím znovu.');
       return;
     }
 
+    setSubmitType(SubmitType.Submit);
     setValue('step', 3);
   }
 
@@ -96,9 +99,9 @@ export default function useStepSubmit() {
   return {
     calculation,
     isSaving,
-    isSending,
+    isSubmitting,
     onSave,
-    onSend,
+    onSubmit,
     stepBack,
   };
 }

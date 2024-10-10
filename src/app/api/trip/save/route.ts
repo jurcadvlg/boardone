@@ -2,7 +2,7 @@ import to from '@/utils/awaitTo';
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { SubmitDto } from '@/app/(home)/_components/StepSubmit/hooks/useStepSubmit';
-import { getSubmittedCalculationEmail } from '@/utils/emails/getSubmittedCalculationEmail';
+import { getSavedCalculationEmail } from '@/utils/emails/getSavedCalculationEmail';
 
 export async function POST(req: NextRequest) {
   const data: SubmitDto = await req.json();
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const mailOptions = getSubmittedCalculationEmail(data, 'BoardOne - Uložená poptávka');
+  const mailOptions = getSavedCalculationEmail(data);
 
   const [error, response] = await to(transporter.sendMail(mailOptions));
 
