@@ -42,7 +42,7 @@ export default function StepSubmit() {
 
       {calculation.price && !calculation.individualCalculation && (
         <div className="my-12">
-          <div className="mx-auto w-fit border-0 border-b-2 border-solid border-b-[#06c760] text-3xl font-bold text-[#012512DD]">
+          <div className="mx-auto w-fit border-0 border-b-2 border-solid border-b-[#06c760] text-3xl font-bold text-[#172039]">
             {calculation.price.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}
           </div>
           <div className="mt-2 text-sm text-gray-500">
@@ -53,7 +53,7 @@ export default function StepSubmit() {
       )}
 
       {(calculation.individualCalculation || !calculation.price) && (
-        <div className="mt-8 text-lg text-[#012512DD]">
+        <div className="mt-8 text-lg text-[#172039]">
           <div>Vaše zadání vyžaduje individuální kalkukaci.</div>
           {isWeekday ? (
             <>

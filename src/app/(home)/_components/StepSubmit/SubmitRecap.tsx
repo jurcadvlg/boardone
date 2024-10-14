@@ -29,7 +29,7 @@ export default function SubmitRecap() {
 
   return (
     <>
-      <h2 className="text-[#012512DD]">Kalkulace cesty</h2>
+      <h2 className="text-[#172039]">Kalkulace cesty</h2>
 
       <div className="rounded-t-2xl border-0 border-l-[24px] border-solid border-[#9b59b6] bg-white p-2 pl-0 transition-all ease-in hover:border-l-[28px] hover:bg-[#9b59b6]">
         <div className="flex flex-row items-center gap-2 text-left">

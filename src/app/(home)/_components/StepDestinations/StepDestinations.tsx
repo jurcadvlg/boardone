@@ -11,7 +11,7 @@ export default function StepDestinations({ isSubmitting }: { isSubmitting: boole
         <Passengers />
       </div>
 
-      <h2 className="mb-1 mt-8 text-[#012512DD]">Výběr trasy</h2>
+      <h2 className="mb-1 mt-8 text-[#172039]">Výběr trasy</h2>
       <Destinations />
 
       <div className="mx-auto mt-6 max-w-[250px]">

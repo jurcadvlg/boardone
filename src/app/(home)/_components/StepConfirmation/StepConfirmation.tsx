@@ -17,9 +17,9 @@ export default function StepConfirmation() {
   return (
     <>
       <div className="mt-10 rounded-2xl bg-white px-4 py-8">
-        {submitType === SubmitType.Submit && <h2 className="text-[#012512DD]">Poptávka odeslána</h2>}
+        {submitType === SubmitType.Submit && <h2 className="text-[#172039]">Poptávka odeslána</h2>}
         {submitType === SubmitType.Save && (
-          <h2 className="text-[#012512DD]">Poptávku včetně cenové kalkulace jsme Vám zaslali na e-mail</h2>
+          <h2 className="text-[#172039]">Poptávku včetně cenové kalkulace jsme Vám zaslali na e-mail</h2>
         )}
 
         <div>
