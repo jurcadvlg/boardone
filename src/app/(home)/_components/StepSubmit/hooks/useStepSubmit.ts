@@ -52,6 +52,7 @@ export default function useStepSubmit() {
       return;
     }
 
+    pushToDataLayer(dto);
     setSubmitType(SubmitType.Save);
     setValue('step', 3);
   }
@@ -88,6 +89,7 @@ export default function useStepSubmit() {
       return;
     }
 
+    pushToDataLayer(dto);
     setSubmitType(SubmitType.Submit);
     setValue('step', 3);
   }
@@ -104,4 +106,15 @@ export default function useStepSubmit() {
     onSubmit,
     stepBack,
   };
+}
+
+function pushToDataLayer(data: SubmitDto) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'form_sent',
+    formEmail: data.formData.email,
+    formPhone: data.formData.phoneNumber,
+    formData: JSON.stringify(data.formData),
+    calculation: JSON.stringify(data.calculation),
+  });
 }

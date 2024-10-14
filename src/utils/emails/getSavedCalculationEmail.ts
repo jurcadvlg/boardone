@@ -23,7 +23,7 @@ export function getSavedCalculationEmail(data: SubmitDto) {
   }
 
   const text = `
-    BoardOne - Nabídka autobusové dopravy\n\n
+    BoardOne - Nabídka dopravy\n\n
     Dobrý den,\n\n
     děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. Cenovou nabídku Vám umíme garantovat následujících 24 hodin. Pro závaznou objednávku nám prosím zavolejte na telefonní číslo +420 770 103 175. Kolega Marek se Vám bude věnovat.\n\n
     Tým BoardOne\n\n
@@ -106,7 +106,7 @@ export function getSavedCalculationEmail(data: SubmitDto) {
     from: process.env.EMAIL_USER,
     to: data.formData.email || process.env.CC_EMAIL,
     bcc: process.env.CC_EMAIL,
-    subject: 'BoardOne: Nabídka poptávka autobusové dopravy',
+    subject: 'BoardOne: Nabídka autobusové dopravy',
     text: text,
     html: html,
   };
