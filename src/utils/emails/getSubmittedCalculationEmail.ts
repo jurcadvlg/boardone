@@ -109,7 +109,7 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: data.formData.email || process.env.CC_EMAIL,
+    to: data.formData.email + ',marek.hales@board1.eu,dima.kohut@board1.eu',
     bcc: process.env.CC_EMAIL,
     subject: 'BoardOne: Závazná poptávka autobusové dopravy',
     text: text,
