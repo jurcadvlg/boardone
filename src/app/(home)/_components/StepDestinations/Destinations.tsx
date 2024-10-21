@@ -13,7 +13,7 @@ export type StopField = {
 };
 
 export default function Destinations({ className }: { className?: string }) {
-  const { fields, direction, handleAddField, handleDeleteField } = useDestinations();
+  const { fields, direction, handleAddField, handleDeleteField, isWaypointRequired } = useDestinations();
 
   return (
     <div className={className}>
@@ -33,6 +33,7 @@ export default function Destinations({ className }: { className?: string }) {
             count={fields.length}
             id={field.id}
             handleDeleteField={handleDeleteField}
+            isWaypointRequired={isWaypointRequired}
           />
         ))}
 
@@ -67,17 +68,19 @@ function WaypointDestination({
   count,
   id,
   handleDeleteField,
+  isWaypointRequired,
 }: {
   i: number;
   count: number;
   id: string;
   handleDeleteField: (id: string, i: number) => void;
+  isWaypointRequired: boolean;
 }) {
   return (
     <div className="mt-2 rounded-2xl bg-white">
       <div className="relative flex w-full items-center border-0 border-b border-solid border-gray-100">
         <AddressAutocomplete name={`waypoint${i + 1}.address`} placeholder="Kam..." type="waypoint" number={i + 1} />
-        {i === count - 1 && (
+        {i === count - 1 && !isWaypointRequired && (
           <div className="absolute right-0.5">
             <IconButton aria-label="delete" onClick={() => handleDeleteField(id, i)}>
               <DeleteIcon />

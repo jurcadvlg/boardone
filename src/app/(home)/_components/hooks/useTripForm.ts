@@ -17,6 +17,7 @@ export type TripFormValues = {
   step: number;
   direction?: 'oneway' | 'roundtrip';
   passengers: number | null;
+  note?: string | null;
 
   origin: {
     address: string;
@@ -44,15 +45,23 @@ export default function useTripForm() {
 
   const validationSchema = yup.object().shape({
     step: yup.number().required(),
-    direction: yup.mixed(),
+    direction: yup.string().oneOf(['oneway', 'roundtrip']).required('Povinné pole'),
     passengers: yup.number().typeError('Povinné pole').min(1, 'Min. 1').required('Povinné pole'),
+    note: yup.string().nullable(),
 
     origin: yup.object().shape({
       address: yup.string().required('Povinné pole'),
       departureTime: yup.date().typeError('Nesprávný formát').required('Povinné pole'),
     }),
     waypoint1: yup.object().shape({
-      address: yup.string().nullable(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      address: yup.string().test('is-not-undefined', 'Povinné pole', (value, context: any) => {
+        const direction = context.options.from[context.from.length - 1].value.direction;
+        if (direction && direction === 'roundtrip') {
+          return Boolean(value);
+        }
+        return true;
+      }),
       departureTime: yup
         .date()
         .typeError('Nesprávný formát')
@@ -184,6 +193,7 @@ export default function useTripForm() {
     step: 1,
     direction: 'oneway',
     passengers: null,
+    note: null,
 
     origin: {
       address: '',

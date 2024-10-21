@@ -7,7 +7,7 @@ type RouteDestination = {
   departureDate?: Date | null;
 };
 
-export function getSubmittedCalculationEmail(data: SubmitDto) {
+export function getSavedCalculationEmailContent(data: SubmitDto) {
   const origin = data.calculation.routes[0].from!;
   const destination = data.calculation.routes[data.calculation.routes.length - 1].to!;
   const originDepartureDate = origin.departureDate
@@ -23,10 +23,9 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
   }
 
   const text = `
-    BoardOne - Závazná poptávka autobusové dopravy\n\n
+    BoardOne - Nabídka autobusové dopravy\n\n
     Dobrý den,\n\n
-    děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a současně připravuje fakturu. Tu Vám zašleme v následujících dnech na uvedené kontaktní údaje.\n\n
-    Těším se na spolupráci\n
+    děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. Cenovou nabídku Vám umíme garantovat následujících 24 hodin. Pro závaznou objednávku nám prosím zavolejte na telefonní číslo +420 770 103 175. Kolega Marek se Vám bude věnovat.\n\n
     Tým BoardOne\n\n
     Vaše poptávka\n
     Počet cestujících: ${data.calculation.passengers}\n
@@ -52,7 +51,8 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
     Kontaktní údaje:\n
     Jméno: ${data.formData.firstName} ${data.formData.lastName}\n
     Telefon: ${data.formData.phoneNumber}\n
-    Email: ${data.formData.email}\n\n
+    Email: ${data.formData.email}\n
+    Poznámka: ${data.formData.note}\n\n
     -----------\n\n
     Tým BoardOne\n
     https://boardone.io\n
@@ -60,14 +60,10 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
   `;
 
   const html = `
-    <h1>BoardOne - Závazná poptávka autobusové dopravy</h1>
+    <h1>BoardOne - Nabídka autobusové dopravy</h1>
     <p>Dobrý den,</p>
-    <p>děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a současně připravuje fakturu. Tu Vám zašleme v následujících dnech na uvedené kontaktní údaje.</p>
-    <p>
-    Těším se na spolupráci,
-    <br />
-    Tým BoardOne
-    </p>
+    <p>děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. <strong>Cenovou nabídku Vám umíme garantovat následujících 24 hodin.</strong> Pro závaznou objednávku nám prosím zavolejte na telefonní číslo <strong>+420 770 103 175</strong>. Kolega Marek se Vám bude věnovat.</p>
+    <p>Tým BoardOne</p>
     <br />
     <h2 style="color: #2196F3;">Vaše poptávka</h2>
     <p>Počet cestujících: <strong>${data.calculation.passengers}</strong></p>
@@ -98,6 +94,7 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
     <p>Jméno: <strong>${data.formData.firstName} ${data.formData.lastName}</strong></p>
     <p>Telefon: <strong>${data.formData.phoneNumber}</strong></p>
     <p>Email: <strong>${data.formData.email}</strong></p>
+    <p>Poznámka: <strong>${data.formData.note}</strong></p>
     <br />
     <p>-----------</p>
     <p>
@@ -107,14 +104,5 @@ export function getSubmittedCalculationEmail(data: SubmitDto) {
     </p>
   `;
 
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: data.formData.email + ',marek.hales@board1.eu,dima.kohut@board1.eu',
-    bcc: process.env.CC_EMAIL,
-    subject: 'BoardOne: Závazná poptávka autobusové dopravy',
-    text: text,
-    html: html,
-  };
-
-  return mailOptions;
+  return { text, html };
 }

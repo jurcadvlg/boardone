@@ -14,7 +14,7 @@ export default function StepDestinations({ isSubmitting }: { isSubmitting: boole
       <h2 className="mb-1 mt-8 text-[#172039]">Výběr trasy</h2>
       <Destinations />
 
-      <div className="mx-auto mt-6 max-w-[250px]">
+      <div className="mx-auto mt-8 max-w-[250px]">
         <Button variant="contained" fullWidth type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Počítání ceny...' : 'Spočítat cenu'}
         </Button>

@@ -7,7 +7,7 @@ type RouteDestination = {
   departureDate?: Date | null;
 };
 
-export function getSavedCalculationEmail(data: SubmitDto) {
+export function getCalculationEmailContent(data: SubmitDto) {
   const origin = data.calculation.routes[0].from!;
   const destination = data.calculation.routes[data.calculation.routes.length - 1].to!;
   const originDepartureDate = origin.departureDate
@@ -23,11 +23,9 @@ export function getSavedCalculationEmail(data: SubmitDto) {
   }
 
   const text = `
-    BoardOne - Nabídka dopravy\n\n
-    Dobrý den,\n\n
-    děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. Cenovou nabídku Vám umíme garantovat následujících 24 hodin. Pro závaznou objednávku nám prosím zavolejte na telefonní číslo +420 770 103 175. Kolega Marek se Vám bude věnovat.\n\n
-    Tým BoardOne\n\n
-    Vaše poptávka\n
+    BoardOne - Kalkulace autobusové dopravy\n\n
+    Datum kalkulace: ${new Date().toLocaleString('cs-CZ', { timeZone: 'Europe/Prague' })}\n\n
+    Poptávka\n
     Počet cestujících: ${data.calculation.passengers}\n
     Jízda: ${data.formData.direction === 'roundtrip' ? 'zpáteční' : 'jednosměrná'}\n
     Z: ${origin.address} - odjezd ${originDepartureDate}\n
@@ -44,27 +42,16 @@ export function getSavedCalculationEmail(data: SubmitDto) {
         return `${w.address} - příjezd ${arrivalDate} - odjezd ${departureDate}`;
       })
       .join('\n')}\n\n
-    Naše nabídka:\n
+    Nabídka:\n
     Vzdálenost: ${Math.round(data.calculation.distance)} km\n
     Délka: ${formatTime(data.calculation.duration)}\n
     Cena: ${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}\n\n
-    Kontaktní údaje:\n
-    Jméno: ${data.formData.firstName} ${data.formData.lastName}\n
-    Telefon: ${data.formData.phoneNumber}\n
-    Email: ${data.formData.email}\n\n
-    -----------\n\n
-    Tým BoardOne\n
-    https://boardone.io\n
-    +420 770 103 175\n
   `;
 
   const html = `
-    <h1>BoardOne - Nabídka autobusové dopravy</h1>
-    <p>Dobrý den,</p>
-    <p>děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. <strong>Cenovou nabídku Vám umíme garantovat následujících 24 hodin.</strong> Pro závaznou objednávku nám prosím zavolejte na telefonní číslo <strong>+420 770 103 175</strong>. Kolega Marek se Vám bude věnovat.</p>
-    <p>Tým BoardOne</p>
-    <br />
-    <h2 style="color: #2196F3;">Vaše poptávka</h2>
+    <h1>BoardOne - Kalkulace autobusové dopravy</h1>
+    <p>Datum kalkulace: <strong>${new Date().toLocaleString('cs-CZ', { timeZone: 'Europe/Prague' })}</strong></p>
+    <h2 style="color: #2196F3;">Poptávka</h2>
     <p>Počet cestujících: <strong>${data.calculation.passengers}</strong></p>
     <p>Jízda: <strong>${data.formData.direction === 'roundtrip' ? 'zpáteční' : 'jednosměrná'}</strong></p>
     <p>Z: <strong>${origin.address}</strong> - odjezd <strong>${originDepartureDate}</strong></p>
@@ -84,32 +71,11 @@ export function getSavedCalculationEmail(data: SubmitDto) {
         .join('')}
     </ul>
     <br />
-    <h2 style="color: #2196F3;">Naše nabídka</h2>
+    <h2 style="color: #2196F3;">Nabídka</h2>
     <p>Vzdálenost: <strong>${Math.round(data.calculation.distance)} km</strong></p>
     <p>Délka: <strong>${formatTime(data.calculation.duration)}</strong></p>
     <p>Cena: <strong>${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}</strong></p>
-    <br />
-    <h2 style="color: #2196F3;">Kontaktní údaje</h2>
-    <p>Jméno: <strong>${data.formData.firstName} ${data.formData.lastName}</strong></p>
-    <p>Telefon: <strong>${data.formData.phoneNumber}</strong></p>
-    <p>Email: <strong>${data.formData.email}</strong></p>
-    <br />
-    <p>-----------</p>
-    <p>
-    Tým BoardOne<br />
-    <a href="https://boardone.io">boardone.io</a><br />
-    +420 770 103 175<br />
-    </p>
   `;
 
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: data.formData.email + ',marek.hales@board1.eu,dima.kohut@board1.eu',
-    bcc: process.env.CC_EMAIL,
-    subject: 'BoardOne: Nabídka autobusové dopravy',
-    text: text,
-    html: html,
-  };
-
-  return mailOptions;
+  return { text, html };
 }

@@ -11,6 +11,8 @@ export default function useDestinations() {
   const originAddress = watch('origin.address');
   const [fields, setFields] = useAtom(fieldsAtom);
 
+  const isWaypointRequired = direction === 'roundtrip' && fields.length <= 1;
+
   function handleAddField() {
     if (fields.length >= 5) {
       toast.error('Lze přidat maximálně 5 zastávek');
@@ -20,6 +22,8 @@ export default function useDestinations() {
   }
 
   function handleDeleteField(id: string, i: number) {
+    if (isWaypointRequired) return;
+
     setFields((fields) => fields.filter((field) => field.id !== id));
     setValue(
       `waypoint${i + 1}`,
@@ -60,5 +64,6 @@ export default function useDestinations() {
     handleAddField,
     handleDeleteField,
     swapOriginAndDestination,
+    isWaypointRequired,
   };
 }

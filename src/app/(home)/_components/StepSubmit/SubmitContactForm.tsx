@@ -13,6 +13,14 @@ export default function SubmitContactForm() {
         </div>
         <TextField label="Telefon" fullWidth {...register('phoneNumber')} />
         <TextField label="E-mail" fullWidth {...register('email')} />
+        <TextField
+          label="Poznámka"
+          multiline
+          rows={2}
+          placeholder="Poznámka (nepovinné)"
+          fullWidth
+          {...register('note')}
+        />
       </div>
     </>
   );

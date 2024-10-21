@@ -18,7 +18,7 @@ export default function StepSubmit() {
 
   const submitButtonText = calculation?.individualCalculation
     ? 'Poptat individuální kalkulaci'
-    : 'Závazně objednat dopravu';
+    : 'Závazně poptat dopravu';
 
   if (!calculation) {
     toast.error('Nepodařilo se načíst kalkulaci. Zkuste to prosím znovu.');
@@ -92,7 +92,7 @@ export default function StepSubmit() {
       <div className="mt-8 flex flex-col-reverse gap-4 md:flex-row">
         <div className="flex-1 md:text-left">
           <Button variant="outlined" type="submit" disabled={isSaving} onClick={onSave}>
-            {isSaving ? 'Ukládání...' : 'Uložit na pozděj'}
+            {isSaving ? 'Odesílání...' : 'Poslat kalkulaci na e-mail'}
           </Button>
         </div>
         <div className="flex-1 md:text-right">

@@ -2,8 +2,10 @@ import { TripDestination, TripFormValues } from '@/app/(home)/_components/hooks/
 import { Config } from '@/config';
 import { Directions } from '@/types/Directions';
 import to from '@/utils/awaitTo';
+import { getCalculationEmailContent } from '@/utils/emails/getCalculationEmailContent';
 import { getTripPrice } from '@/utils/getTripPrice';
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 const GOOGLE_MAPS_URL = Config.googleMapsUrl;
 const FREE_WAITING_TIME = Config.calculation.freeWaitingTimeInMinutes / 60;
@@ -81,6 +83,26 @@ export async function POST(req: NextRequest) {
     individualCalculation: individualCalculation,
     passengers: body.passengers || 0,
   };
+
+  const { text, html } = getCalculationEmailContent({ formData: body, calculation });
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailForAdmin = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_ADMIN_TO,
+    subject: 'BoardOne: Kalkulace autobusové dopravy',
+    text: text,
+    html: html,
+  };
+
+  await to(transporter.sendMail(mailForAdmin));
 
   return NextResponse.json(calculation);
 }
