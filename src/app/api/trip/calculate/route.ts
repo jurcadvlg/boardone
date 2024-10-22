@@ -94,15 +94,15 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const mailForAdmin = {
-    from: process.env.EMAIL_USER,
-    to: process.env.EMAIL_ADMIN_TO,
+  const mailForInfo = {
+    from: process.env.EMAIL_FROM,
+    to: process.env.EMAIL_INFO_TO,
     subject: 'BoardOne: Kalkulace autobusové dopravy',
     text: text,
     html: html,
   };
 
-  await to(transporter.sendMail(mailForAdmin));
+  await to(transporter.sendMail(mailForInfo));
 
   return NextResponse.json(calculation);
 }

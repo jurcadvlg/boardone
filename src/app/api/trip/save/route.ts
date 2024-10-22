@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   const { text, html } = getSavedCalculationEmailContent(data);
 
   const mailForUser = {
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_FROM,
     to: data.formData.email,
     subject: 'BoardOne: Nabídka autobusové dopravy',
     text: text,
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
   }
 
   const mailForAdmin = {
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_ADMIN_TO,
     cc: process.env.EMAIL_ADMIN_CC,
     subject: 'BoardOne: Nabídka autobusové dopravy',
