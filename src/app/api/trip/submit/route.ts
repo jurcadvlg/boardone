@@ -21,10 +21,14 @@ export async function POST(req: NextRequest) {
 
   const { text, html } = getSubmittedCalculationEmailContent(data);
 
+  const emailSubject = data.calculation.individualCalculation
+    ? 'BoardOne - Individuální kalkulace autobusové dopravy'
+    : 'BoardOne - Závazná poptávka autobusové dopravy';
+
   const mailForUser = {
     from: process.env.EMAIL_FROM,
     to: data.formData.email,
-    subject: 'BoardOne: Závazná poptávka autobusové dopravy',
+    subject: emailSubject,
     text: text,
     html: html,
   };
@@ -39,7 +43,7 @@ export async function POST(req: NextRequest) {
     from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_ADMIN_TO,
     cc: process.env.EMAIL_ADMIN_CC,
-    subject: 'BoardOne: Závazná poptávka autobusové dopravy',
+    subject: emailSubject,
     text: text,
     html: html,
   };

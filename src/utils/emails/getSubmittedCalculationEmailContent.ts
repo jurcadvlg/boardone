@@ -22,11 +22,19 @@ export function getSubmittedCalculationEmailContent(data: SubmitDto) {
     waypoints = data.calculation.routes.slice(0, -1).map((route) => route.to);
   }
 
+  const emailSubject = data.calculation.individualCalculation
+    ? 'BoardOne - Individuální kalkulace autobusové dopravy'
+    : 'BoardOne - Závazná poptávka autobusové dopravy';
+
+  const emailMessage = data.calculation.individualCalculation
+    ? 'děkujeme, že jste se rozhodli využít služeb BoardOne. Potvrzujeme tímto přijetí Vaší poptávky individuální kalkulace autobusové dopravy. Náš tým ji v nejbližších hodinách připraví a v případě potřeby upřesnění některých detailů Vás bude telefonicky kontaktovat.'
+    : 'děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a v příštích hodinách Vaši poptávku potvrdí nebo upřesní předběžnou kalkulaci.';
+
   const text = `
-    BoardOne - Závazná poptávka autobusové dopravy\n\n
+    ${emailSubject}\n\n
     Dobrý den,\n\n
-    děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a současně připravuje fakturu. Tu Vám zašleme v následujících dnech na uvedené kontaktní údaje.\n\n
-    Těším se na spolupráci\n
+    ${emailMessage}\n\n
+    Těšíme se na spolupráci\n
     Tým BoardOne\n\n
     Vaše poptávka\n
     Počet cestujících: ${data.calculation.passengers}\n
@@ -45,7 +53,7 @@ export function getSubmittedCalculationEmailContent(data: SubmitDto) {
         return `${w.address} - příjezd ${arrivalDate} - odjezd ${departureDate}`;
       })
       .join('\n')}\n\n
-    Naše nabídka:\n
+    Naše předběžná nabídka:\n
     Vzdálenost: ${Math.round(data.calculation.distance)} km\n
     Délka: ${formatTime(data.calculation.duration)}\n
     Cena: ${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}\n\n
@@ -61,11 +69,11 @@ export function getSubmittedCalculationEmailContent(data: SubmitDto) {
   `;
 
   const html = `
-    <h1>BoardOne - Závazná poptávka autobusové dopravy</h1>
+    <h1>${emailSubject}</h1>
     <p>Dobrý den,</p>
-    <p>děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a současně připravuje fakturu. Tu Vám zašleme v následujících dnech na uvedené kontaktní údaje.</p>
+    <p>${emailMessage}</p>
     <p>
-    Těším se na spolupráci,
+    Těšíme se na spolupráci,
     <br />
     Tým BoardOne
     </p>
@@ -90,7 +98,7 @@ export function getSubmittedCalculationEmailContent(data: SubmitDto) {
         .join('')}
     </ul>
     <br />
-    <h2 style="color: #2196F3;">Naše nabídka</h2>
+    <h2 style="color: #2196F3;">Naše předběžná nabídka</h2>
     <p>Vzdálenost: <strong>${Math.round(data.calculation.distance)} km</strong></p>
     <p>Délka: <strong>${formatTime(data.calculation.duration)}</strong></p>
     <p>Cena: <strong>${data.calculation.individualCalculation ? 'Individuální kalkulace' : data.calculation.price?.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}</strong></p>
