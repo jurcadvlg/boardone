@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
   const mailForInfo = {
     from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_INFO_TO,
-    subject: 'BoardOne: Kalkulace autobusové dopravy',
+    subject: 'BoardOne: Byla vytvořena kalkulace',
     text: text,
     html: html,
   };
