@@ -45,9 +45,17 @@ export default function StepSubmit() {
           <div className="mx-auto w-fit border-0 border-b-2 border-solid border-b-[#06c760] text-3xl font-bold text-[#172039]">
             {calculation.price.toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}
           </div>
-          <div className="mt-2 text-sm text-gray-500">
-            <div>Cena včetně DPH</div>
-            <div>Do ceny nejsou zahrnuty náklady na parkovné a vjezdy autobusu</div>
+          <div className="mt-3 text-sm text-gray-500">
+            <div>
+              {Math.round(calculation.price * 1.12).toLocaleString('cs-CZ', { style: 'currency', currency: 'CZK' })}{' '}
+              včetně DPH.
+            </div>
+            <div className="mt-2">Cena je indikativní, může být mírně upravena v upřesňující nabídce.</div>
+            <div>
+              {calculation.isForeignCountry
+                ? 'Do ceny nejsou zahrnuty náklady na parkovné, vjezdy autobusu a zahraniční poplatky.'
+                : 'Do ceny nejsou zahrnuty náklady na parkovné a vjezdy autobusu.'}
+            </div>
           </div>
         </div>
       )}

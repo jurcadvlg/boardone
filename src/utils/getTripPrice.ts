@@ -1,8 +1,11 @@
 import { Prices } from '@/prices';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { isWinterSeason } from './isWinterSeason';
 import { Config } from '@/config';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const WINTER_SEASON_DISCOUNT = (100 - Config.calculation.winterSeasonDiscountPercent) / 100;
+const BOARDONE_MARGIN = 1.1;
 
 export function getTripPrice(
   distance: number,
@@ -11,7 +14,10 @@ export function getTripPrice(
   paidWaitingTime: number,
   passengers: number,
   direction: string,
+  isDepartureFromPrague: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   tripStartDate?: Date | null,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   tripEndDate?: Date | null
 ): number | null {
   let price: number | null = null;
@@ -19,69 +25,48 @@ export function getTripPrice(
   switch (direction) {
     default:
     case 'oneway':
-      price = getOnewayPrice(distance, paidWaitingTime, passengers);
+      price = calculatePrice(distance, paidWaitingTime, passengers, isDepartureFromPrague);
       break;
     case 'roundtrip':
-      price = getRoundtripPrice(distance, duration + waitTime, passengers);
+      price = calculatePrice(distance * 2, paidWaitingTime, passengers, isDepartureFromPrague);
       break;
   }
 
-  if (tripStartDate && tripEndDate && price) {
-    if (isWinterSeason(tripStartDate) && isWinterSeason(tripEndDate)) {
-      price = price * WINTER_SEASON_DISCOUNT;
-    }
-  }
+  // if (tripStartDate && tripEndDate && price) {
+  //   if (isWinterSeason(tripStartDate) && isWinterSeason(tripEndDate)) {
+  //     price = price * WINTER_SEASON_DISCOUNT;
+  //   }
+  // }
 
   return price;
 }
 
-function getRoundtripPrice(distance: number, time: number, passengers: number): number | null {
-  // Filter prices array for matching entries
-  const matchingEntries = Prices.roundtrip.filter(
-    (entry) => entry.maxDistanceInKm >= distance && entry.maxTimeInHours >= time
-  );
+function calculatePrice(distance: number, waitTime: number, passengers: number, isDepartureFromPrague: boolean) {
+  const matchingEntries = Prices.filter((entry) => entry.passengers >= passengers);
 
   if (matchingEntries.length === 0) return null;
-
-  // Sort matching entries by maxDistanceInKm and maxTimeInHours to get the closest match
-  matchingEntries.sort((a, b) => a.maxDistanceInKm - b.maxDistanceInKm || a.maxTimeInHours - b.maxTimeInHours);
-
-  // Get the closest match
+  matchingEntries.sort((a, b) => a.passengers - b.passengers);
   const closestMatch = matchingEntries[0];
 
-  // Find the price for the given number of passengers
-  const closestPriceEntry = closestMatch.pricesByPassengers.find((entry) => entry.passengers >= passengers);
+  const distancePrice = closestMatch.pricePerKm * distance;
+  const waitingPrice = closestMatch.waitingPricePerHour * waitTime;
 
-  if (!closestPriceEntry) return null;
+  let price = distancePrice + waitingPrice;
 
-  return closestPriceEntry.price;
-}
+  // Add 10 % for Prague
+  if (isDepartureFromPrague) {
+    price = price * 1.1;
+  }
 
-function getOnewayPrice(distance: number, waitTime: number, passengers: number): number | null {
-  // Filter prices array for matching entries
-  const matchingEntries = Prices.oneway.filter((entry) => entry.maxDistanceInKm >= distance);
+  // Add BoardOne margin
+  price = price * BOARDONE_MARGIN;
 
-  if (matchingEntries.length === 0) return null;
+  // Round price
+  price = Math.round(price / 100) * 100;
 
-  // Sort matching entries by maxDistanceInKm to get the closest match
-  matchingEntries.sort((a, b) => a.maxDistanceInKm - b.maxDistanceInKm);
+  if (price < closestMatch.minPrice) {
+    price = closestMatch.minPrice;
+  }
 
-  // Get the closest match
-  const closestMatch = matchingEntries[0];
-
-  // Find the price for the given number of passengers
-  const closestPriceEntry = closestMatch.pricesByPassengers.find((entry) => entry.passengers >= passengers);
-
-  if (!closestPriceEntry) return null;
-
-  // Waiting prices
-  const matchingWaitingPrices = Prices.waiting.filter((entry) => entry.passengers >= passengers);
-
-  if (matchingWaitingPrices.length === 0) return null;
-
-  matchingWaitingPrices.sort((a, b) => a.passengers - b.passengers);
-
-  const waitingPrice = matchingWaitingPrices[0].price * waitTime;
-
-  return closestPriceEntry.price + waitingPrice;
+  return price;
 }

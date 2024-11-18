@@ -17,6 +17,7 @@ export type Calculation = {
   distance: number;
   individualCalculation: boolean;
   passengers: number;
+  isForeignCountry: boolean;
 };
 
 type Route = {
@@ -40,7 +41,7 @@ export async function POST(req: NextRequest) {
   // TODO: If foreign trip, individual calculation = true
   let individualCalculation = false;
 
-  const [routes, isArrivalTimeConflicted] = await getRoutes(body);
+  const [routes, isArrivalTimeConflicted, isForeignCountry, isDepartureFromPrague] = await getRoutes(body);
 
   if (isArrivalTimeConflicted) {
     individualCalculation = true;
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
     paidWaitingTimeInHours,
     body.passengers ?? 0,
     body.direction ?? '',
+    isDepartureFromPrague,
     tripStartDate,
     tripEndDate
   );
@@ -82,6 +84,7 @@ export async function POST(req: NextRequest) {
     price: price,
     individualCalculation: individualCalculation,
     passengers: body.passengers || 0,
+    isForeignCountry: isForeignCountry,
   };
 
   const { text, html } = getCalculationEmailContent({ formData: body, calculation });
@@ -125,7 +128,7 @@ function getWaitingTime(routes: Route[]) {
   return [totalWaitingTime, paidWaitingTime];
 }
 
-async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean]> {
+async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean, boolean, boolean]> {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
 
   const destinations = [
@@ -143,6 +146,15 @@ async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean
   let i = 0;
   let lastDepartureDate = body.origin.departureTime ?? new Date();
   let isArrivalTimeConflicted = false; // If arrival time is later than departure time of the next destination, return individual calculation
+  let isForeignCountry = false;
+
+  let isDepartureFromPrague = false;
+
+  const distanceFromPrague = await getDistanceFromPrague(body.origin.address);
+
+  if (distanceFromPrague < 10) {
+    isDepartureFromPrague = true;
+  }
 
   for (const origin of destinations as TripDestination[]) {
     i += 1;
@@ -153,13 +165,20 @@ async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean
     const [error, response] = await to(fetch(url));
 
     if (error || !response) {
-      return [null, false];
+      return [null, false, false, false];
     }
 
     const data: Directions = await response.json();
 
     const duration = data.routes[0].legs[0].duration.value;
     const distance = data.routes[0].legs[0].distance.value;
+
+    if (
+      !data.routes[0].legs[0].start_address.includes('Czechia') ||
+      !data.routes[0].legs[0].end_address.includes('Czechia')
+    ) {
+      isForeignCountry = true;
+    }
 
     const arrivalDate = origin.departureTime
       ? addDurationToDate(new Date(origin.departureTime), duration)
@@ -192,11 +211,28 @@ async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean
     lastDepartureDate = departureDate;
   }
 
-  return [routes, isArrivalTimeConflicted];
+  return [routes, isArrivalTimeConflicted, isForeignCountry, isDepartureFromPrague];
 }
 
 function addDurationToDate(date: Date, time: number) {
   const newDate = new Date(date.getTime());
   newDate.setTime(newDate.getTime() + time * 1000);
   return newDate;
+}
+
+async function getDistanceFromPrague(address: string) {
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
+  const pragueAddress = 'Prague, Czechia';
+
+  const url = `${GOOGLE_MAPS_URL}?origin=${pragueAddress}&destination=${address}&key=${apiKey}`;
+  const [error, response] = await to(fetch(url));
+
+  if (error || !response) {
+    return 0;
+  }
+
+  const data: Directions = await response.json();
+
+  const distance = data.routes[0].legs[0].distance.value;
+  return distance ?? 0;
 }
