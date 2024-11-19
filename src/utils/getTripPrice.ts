@@ -25,10 +25,10 @@ export function getTripPrice(
   switch (direction) {
     default:
     case 'oneway':
-      price = calculatePrice(distance, paidWaitingTime, passengers, isDepartureFromPrague);
+      price = calculatePrice(distance * 2, paidWaitingTime, passengers, isDepartureFromPrague);
       break;
     case 'roundtrip':
-      price = calculatePrice(distance * 2, paidWaitingTime, passengers, isDepartureFromPrague);
+      price = calculatePrice(distance, paidWaitingTime, passengers, isDepartureFromPrague);
       break;
   }
 
