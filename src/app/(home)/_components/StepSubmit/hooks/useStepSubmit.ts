@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAtomValue, useSetAtom } from 'jotai';
 import to from '@/utils/awaitTo';
@@ -17,6 +17,17 @@ export default function useStepSubmit() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const calculation = useAtomValue(calculationAtom);
   const setSubmitType = useSetAtom(submitTypeAtom);
+
+  useEffect(() => {
+    const pushToDataLayer = () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'step_2',
+      });
+    };
+
+    pushToDataLayer();
+  }, []);
 
   const { setValue, getValues, trigger } = useFormContext<TripFormValues>();
 
@@ -111,7 +122,8 @@ export default function useStepSubmit() {
 function pushToDataLayer(data: SubmitDto) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
-    event: 'form_sent',
+    event: 'trip_submitted',
+    formName: 'step_2',
     formEmail: data.formData.email,
     formPhone: data.formData.phoneNumber,
     formData: JSON.stringify(data.formData),

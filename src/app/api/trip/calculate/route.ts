@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
   const body: TripFormValues = await req.json();
   if (!body) return NextResponse.json({ error: 'Missing body' }, { status: 400 });
 
-  // TODO: If foreign trip, individual calculation = true
   let individualCalculation = false;
 
   const [routes, isArrivalTimeConflicted, isForeignCountry, isDepartureFromPrague] = await getRoutes(body);
@@ -56,7 +55,11 @@ export async function POST(req: NextRequest) {
 
   const totalDurationInHours = totalDuration / 3600;
   const totalDistanceInKm = totalDistance / 1000;
-  const [waitingTimeInHours, paidWaitingTimeInHours] = getWaitingTime(routes);
+  const [waitingTimeInHours, paidWaitingTimeInHours, isLongerThanTwelveHours] = getWaitingTime(routes);
+
+  if (isLongerThanTwelveHours) {
+    individualCalculation = true;
+  }
 
   const tripStartDate = routes[0].from.departureDate;
   const tripEndDate = routes[routes.length - 1].to.arrivalDate;
@@ -110,9 +113,10 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(calculation);
 }
 
-function getWaitingTime(routes: Route[]) {
+function getWaitingTime(routes: Route[]): [number, number, boolean] {
   let totalWaitingTime = 0;
   let paidWaitingTime = 0;
+  let isLongerThanTwelveHours = false;
 
   routes.forEach((route) => {
     const arrivalDate = route.to.arrivalDate;
@@ -120,12 +124,17 @@ function getWaitingTime(routes: Route[]) {
 
     if (arrivalDate && departureDate) {
       const waitingTime = (departureDate.getTime() - arrivalDate.getTime()) / 1000 / 3600;
+
+      if (waitingTime >= 12) {
+        isLongerThanTwelveHours = true;
+      }
+
       totalWaitingTime += waitingTime > 0 ? waitingTime : 0;
       paidWaitingTime += waitingTime > FREE_WAITING_TIME ? Math.ceil(waitingTime) : 0;
     }
   });
 
-  return [totalWaitingTime, paidWaitingTime];
+  return [totalWaitingTime, paidWaitingTime, isLongerThanTwelveHours];
 }
 
 async function getRoutes(body: TripFormValues): Promise<[Route[] | null, boolean, boolean, boolean]> {

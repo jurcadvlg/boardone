@@ -259,6 +259,7 @@ export default function useTripForm() {
     const calculation: Calculation = await response.json();
     setCalculation(calculation);
     form.setValue('step', 2);
+    pushToDataLayer(data, calculation);
   }
 
   return {
@@ -267,4 +268,14 @@ export default function useTripForm() {
     isSubmitting,
     step,
   };
+}
+
+function pushToDataLayer(data: TripFormValues, calculation: Calculation) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'trip_calculated',
+    formName: 'step_1',
+    formData: JSON.stringify(data),
+    calculation: JSON.stringify(calculation),
+  });
 }
