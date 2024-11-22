@@ -62,7 +62,7 @@ export default function StepSubmit() {
 
       {(calculation.individualCalculation || !calculation.price) && (
         <div className="mt-8 text-lg text-[#172039]">
-          <div>Vaše zadání vyžaduje individuální kalkukaci.</div>
+          <div>Vaše zadání vyžaduje individuální kalkulaci.</div>
           {isWeekday ? (
             <>
               {isMorningHours && !isWorkingHours && (
