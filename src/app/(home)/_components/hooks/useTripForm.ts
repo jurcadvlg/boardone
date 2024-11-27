@@ -275,7 +275,7 @@ function pushToDataLayer(data: TripFormValues, calculation: Calculation) {
   window.dataLayer.push({
     event: 'trip_calculated',
     formName: 'step_1',
-    formData: JSON.stringify(data),
-    calculation: JSON.stringify(calculation),
+    formData: data,
+    calculation: calculation,
   });
 }

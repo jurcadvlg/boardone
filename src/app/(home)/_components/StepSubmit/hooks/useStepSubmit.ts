@@ -63,7 +63,7 @@ export default function useStepSubmit() {
       return;
     }
 
-    pushToDataLayer(dto);
+    pushToDataLayer(dto, 'sendToEmail');
     setSubmitType(SubmitType.Save);
     setValue('step', 3);
   }
@@ -100,7 +100,7 @@ export default function useStepSubmit() {
       return;
     }
 
-    pushToDataLayer(dto);
+    pushToDataLayer(dto, 'submitInquiry');
     setSubmitType(SubmitType.Submit);
     setValue('step', 3);
   }
@@ -119,14 +119,15 @@ export default function useStepSubmit() {
   };
 }
 
-function pushToDataLayer(data: SubmitDto) {
+function pushToDataLayer(data: SubmitDto, submitType: string) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event: 'trip_submitted',
+    formType: submitType,
     formName: 'step_2',
     formEmail: data.formData.email,
     formPhone: data.formData.phoneNumber,
-    formData: JSON.stringify(data.formData),
-    calculation: JSON.stringify(data.calculation),
+    formData: data.formData,
+    calculation: data.calculation,
   });
 }

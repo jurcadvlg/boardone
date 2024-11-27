@@ -97,7 +97,7 @@ export default function StepSubmit() {
         <SubmitContactForm />
       </div>
 
-      <div className="mt-8 flex flex-col-reverse gap-4 md:flex-row">
+      <div className="mt-8 flex flex-col-reverse gap-4 sm:flex-row">
         <div className="flex-1 md:text-left">
           <Button variant="outlined" type="submit" disabled={isSaving} onClick={onSave}>
             {isSaving ? 'Odesílání...' : 'Poslat kalkulaci na e-mail'}
