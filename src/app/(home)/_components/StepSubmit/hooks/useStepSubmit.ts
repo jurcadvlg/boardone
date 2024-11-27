@@ -100,7 +100,7 @@ export default function useStepSubmit() {
       return;
     }
 
-    pushToDataLayer(dto, 'submitInquiry');
+    pushToDataLayer(dto, 'submit');
     setSubmitType(SubmitType.Submit);
     setValue('step', 3);
   }
