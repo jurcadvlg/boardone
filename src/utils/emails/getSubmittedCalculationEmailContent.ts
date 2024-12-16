@@ -28,7 +28,7 @@ export function getSubmittedCalculationEmailContent(data: SubmitDto) {
 
   const emailMessage = data.calculation.individualCalculation
     ? 'děkujeme, že jste se rozhodli využít služeb BoardOne. Potvrzujeme tímto přijetí Vaší poptávky individuální kalkulace autobusové dopravy. Náš tým ji v nejbližších hodinách připraví a v případě potřeby upřesnění některých detailů Vás bude telefonicky kontaktovat.'
-    : 'děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je závazná poptávka autobusové dopravy. Náš tým začal dopravu organizovat a v příštích hodinách Vaši poptávku potvrdí nebo upřesní předběžnou kalkulaci.';
+    : 'děkujeme, že jste se rozhodli využít služeb BoardOne. Toto je nezávazná poptávka autobusové dopravy. Náš tým začal dopravu ověřovat a v příštích hodinách Vaši poptávku potvrdí nebo upřesní kalkulaci.';
 
   const text = `
     ${emailSubject}\n\n

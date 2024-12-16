@@ -46,6 +46,10 @@ export async function POST(req: NextRequest) {
     individualCalculation = true;
   }
 
+  if (isForeignCountry) {
+    individualCalculation = true;
+  }
+
   if (!routes || !routes.length) {
     return NextResponse.json({ error: 'Error fetching directions' }, { status: 500 });
   }

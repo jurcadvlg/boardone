@@ -25,7 +25,7 @@ export function getSavedCalculationEmailContent(data: SubmitDto) {
   const text = `
     BoardOne - Nabídka autobusové dopravy\n\n
     Dobrý den,\n\n
-    děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. Cenovou nabídku Vám umíme garantovat následujících 24 hodin. Pro závaznou objednávku nám prosím zavolejte na telefonní číslo +420 770 103 175. Kolega Marek se Vám bude věnovat.\n\n
+    děkujeme za možnost pro Vás připravit předběžnou kalkulaci autobusové dopravy. Pokud se rozhodnete, že o dopravu máte zájem, je potřeba, abychom nabídku upřesnili. Za tímto účelem nám prosím napište na team@boardone.io, případně zavolejte na telefonní číslo +420 770 103 175. Kolega Marek se Vám bude věnovat.\n\n
     Tým BoardOne\n\n
     Vaše poptávka\n
     Počet cestujících: ${data.calculation.passengers}\n
@@ -62,7 +62,7 @@ export function getSavedCalculationEmailContent(data: SubmitDto) {
   const html = `
     <h1>BoardOne - Nabídka autobusové dopravy</h1>
     <p>Dobrý den,</p>
-    <p>děkujeme za možnost pro Vás připravit nabídku autobusové dopravy. <strong>Cenovou nabídku Vám umíme garantovat následujících 24 hodin.</strong> Pro závaznou objednávku nám prosím zavolejte na telefonní číslo <strong>+420 770 103 175</strong>. Kolega Marek se Vám bude věnovat.</p>
+    <p>děkujeme za možnost pro Vás připravit předběžnou kalkulaci autobusové dopravy. Pokud se rozhodnete, že o dopravu máte zájem, je potřeba, abychom nabídku upřesnili. Za tímto účelem nám prosím napište na team@boardone.io, případně zavolejte na telefonní číslo <strong>+420 770 103 175</strong>. Kolega Marek se Vám bude věnovat.</p>
     <p>Tým BoardOne</p>
     <br />
     <h2 style="color: #2196F3;">Vaše poptávka</h2>

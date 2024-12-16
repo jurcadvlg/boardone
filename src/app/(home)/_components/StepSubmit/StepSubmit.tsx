@@ -18,7 +18,7 @@ export default function StepSubmit() {
 
   const submitButtonText = calculation?.individualCalculation
     ? 'Poptat individuální kalkulaci'
-    : 'Závazně poptat dopravu';
+    : 'Pošlete mi přesnou cenu';
 
   if (!calculation) {
     toast.error('Nepodařilo se načíst kalkulaci. Zkuste to prosím znovu.');
@@ -97,17 +97,26 @@ export default function StepSubmit() {
         <SubmitContactForm />
       </div>
 
-      <div className="mt-8 flex flex-col-reverse gap-4 sm:flex-row">
-        <div className="flex-1 md:text-left">
-          <Button variant="outlined" type="submit" disabled={isSaving} onClick={onSave}>
-            {isSaving ? 'Odesílání...' : 'Poslat kalkulaci na e-mail'}
-          </Button>
-        </div>
-        <div className="flex-1 md:text-right">
+      <div className="mt-8 grid grid-cols-1 gap-2 text-center">
+        <div>
           <Button variant="contained" type="submit" disabled={isSubmitting} onClick={onSubmit}>
             {isSubmitting ? 'Odesílání...' : submitButtonText}
           </Button>
         </div>
+        {!calculation.individualCalculation && (
+          <div className="mt-2">
+            {calculation.price && (
+              <div className="mt-2 text-sm text-gray-700">
+                Pokud ještě nejste rozhodnuti, pošlete si kopii této kalkulace na email.
+              </div>
+            )}
+            <div>
+              <Button variant="text" type="submit" disabled={isSaving} onClick={onSave}>
+                {isSaving ? 'Odesílání...' : 'Odeslat na e-mail'}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-6 text-left">
